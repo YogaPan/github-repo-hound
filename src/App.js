@@ -1,11 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Input from "./Input/Input";
 import RepoList from "./RepoList/RepoList";
 import mockResponse from "./mock/mockResponse.json";
+import debounce from "./utils/debounce";
 import "./App.css";
 
 const mockFetch = () =>
   new Promise((resolve) => setTimeout(() => resolve(mockResponse), 1000));
+
+const debounceDelayInMs = 1000;
 
 function App() {
   const [query, setQuery] = useState("");
@@ -13,14 +16,11 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const handleInputChange = (e) => {
-    setQuery(e.target.value);
-  };
+  const handleInputChange = (e) => setQuery(e.target.value);
 
-  useEffect(() => {
+  const fetchRepos = (query) => {
     setLoading(true);
-
-    mockFetch()
+    mockFetch(query)
       .then((response) => {
         setRepos(response.items);
         setError(false);
@@ -32,7 +32,15 @@ function App() {
       .finally(() => {
         setLoading(false);
       });
-  }, [query]);
+  };
+
+  const debounceFetchRepos = useMemo(
+    () => debounce(fetchRepos, debounceDelayInMs),
+    []
+  );
+  useEffect(() => {
+    debounceFetchRepos(query);
+  }, [query, debounceFetchRepos]);
 
   return (
     <div className="App">
