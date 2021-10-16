@@ -1,12 +1,9 @@
 import { useState, useEffect, useMemo } from "react";
 import Input from "./Input/Input";
 import RepoList from "./RepoList/RepoList";
-import mockResponse from "./mock/mockResponse.json";
 import debounce from "./utils/debounce";
+import GithubAPI from "./utils/githubAPI";
 import "./App.css";
-
-const mockFetch = () =>
-  new Promise((resolve) => setTimeout(() => resolve(mockResponse), 1000));
 
 const debounceDelayInMs = 500;
 
@@ -27,9 +24,10 @@ function App() {
     }
 
     setLoading(true);
-    mockFetch(query)
-      .then((response) => {
-        setRepos(response.items);
+    GithubAPI.searchRepo(query)
+      .then((response) => response.json())
+      .then((body) => {
+        setRepos(body.items);
         setError(false);
       })
       .catch((err) => {
