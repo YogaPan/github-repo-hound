@@ -8,7 +8,7 @@ import "./App.css";
 const mockFetch = () =>
   new Promise((resolve) => setTimeout(() => resolve(mockResponse), 1000));
 
-const debounceDelayInMs = 1000;
+const debounceDelayInMs = 500;
 
 function App() {
   const [query, setQuery] = useState("");
@@ -19,6 +19,13 @@ function App() {
   const handleInputChange = (e) => setQuery(e.target.value);
 
   const fetchRepos = (query) => {
+    if (!query) {
+      setLoading(false);
+      setError(false);
+      setRepos([]);
+      return;
+    }
+
     setLoading(true);
     mockFetch(query)
       .then((response) => {
