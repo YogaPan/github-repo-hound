@@ -1,11 +1,24 @@
 import { useState, useEffect, useMemo } from "react";
+import styled from "styled-components";
 import Input from "./Input/Input";
 import RepoList from "./RepoList/RepoList";
 import debounce from "./utils/debounce";
 import GithubAPI from "./utils/githubAPI";
 import "./App.css";
 
-const debounceDelayInMs = 500;
+const debounceDelayInMs = 250;
+const perPage = 10;
+
+const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+`;
+
+const Header = styled.div`
+  padding: 10px;
+`;
 
 function App() {
   const [query, setQuery] = useState("");
@@ -54,11 +67,27 @@ function App() {
     debounceFetchRepos(query, page);
   }, [debounceFetchRepos, query, page]);
 
+  useEffect(() => {
+    const onScroll = () => {
+      if (
+        window.innerHeight + window.pageYOffset >=
+        document.body.offsetHeight
+      ) {
+        console.warn("you're at the bottom of the page");
+      }
+    };
+    window.addEventListener("scroll", onScroll);
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <div className="App">
-      <Input value={query} onChange={handleInputChange} />
+    <AppContainer className="App">
+      <Header>
+        <Input value={query} onChange={handleInputChange} />
+      </Header>
       <RepoList repos={repos} loading={loading} error={error} />
-    </div>
+    </AppContainer>
   );
 }
 
