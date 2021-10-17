@@ -1,6 +1,8 @@
 import Repo from "./Repo";
 import styled from "styled-components";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import ErrorDisplay from "./ErrorDisplay";
+import NotFoundDisplay from "./NotFoundDisplay";
 
 const RepoListContainer = styled.div`
   margin: auto;
@@ -23,12 +25,15 @@ const LoadingIcon = styled(AiOutlineLoading3Quarters)`
 `;
 
 function RepoList({ repos, loading, error }) {
-  if (error) return <p>error</p>;
+  const notFound = repos && repos.length === 0;
+
+  if (error) return <ErrorDisplay error={error} />;
   if (loading) return <LoadingIcon />;
+  if (notFound) return <NotFoundDisplay />;
 
   return (
     <RepoListContainer>
-      {repos.map((repo) => (
+      {repos?.map((repo) => (
         <Repo key={repo.id} repo={repo} />
       ))}
     </RepoListContainer>

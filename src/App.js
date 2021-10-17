@@ -23,7 +23,7 @@ const Header = styled.div`
 function App() {
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
-  const [repos, setRepos] = useState([]);
+  const [repos, setRepos] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
@@ -34,7 +34,7 @@ function App() {
       setPage(1);
       setLoading(false);
       setError(false);
-      setRepos([]);
+      setRepos(null);
       return;
     }
 
@@ -51,7 +51,7 @@ function App() {
       .catch((err) => {
         console.error(err);
         setError(err);
-        setRepos([]);
+        setRepos(null);
         setPage(1);
       })
       .finally(() => {
