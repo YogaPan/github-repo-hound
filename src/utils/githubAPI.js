@@ -17,6 +17,11 @@ class GithubAPI {
     this.body = undefined;
   }
 
+  paginate(page, perPage) {
+    this.params({ page, per_page: perPage });
+    return this;
+  }
+
   headers(data) {
     this.headers = data;
     return this;
@@ -46,7 +51,12 @@ class GithubAPI {
       method: this.method,
       headers: this.headers,
       body: this.body,
-    }).then(onFulfill, onReject);
+    })
+      .then((response) => {
+        if (response.ok) return response;
+        throw new Error(response.status);
+      })
+      .then(onFulfill, onReject);
   }
 }
 

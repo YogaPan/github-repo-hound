@@ -9,14 +9,16 @@ const debounceDelayInMs = 500;
 
 function App() {
   const [query, setQuery] = useState("");
+  const [page, setPage] = useState(1);
   const [repos, setRepos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
   const handleInputChange = (e) => setQuery(e.target.value);
 
-  const fetchRepos = (query) => {
+  const fetchRepos = (query, page) => {
     if (!query) {
+      setPage(1);
       setLoading(false);
       setError(false);
       setRepos([]);
@@ -25,14 +27,19 @@ function App() {
 
     setLoading(true);
     GithubAPI.searchRepo(query)
-      .then((response) => response.json())
+      .paginate(page, perPage)
+      .then((response) => {
+        return response.json();
+      })
       .then((body) => {
         setRepos(body.items);
         setError(false);
       })
       .catch((err) => {
         console.error(err);
-        setError(true);
+        setError(err);
+        setRepos([]);
+        setPage(1);
       })
       .finally(() => {
         setLoading(false);
@@ -44,8 +51,8 @@ function App() {
     []
   );
   useEffect(() => {
-    debounceFetchRepos(query);
-  }, [query, debounceFetchRepos]);
+    debounceFetchRepos(query, page);
+  }, [debounceFetchRepos, query, page]);
 
   return (
     <div className="App">
