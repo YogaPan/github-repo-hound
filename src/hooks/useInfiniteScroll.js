@@ -4,13 +4,8 @@ export default function useInfiniteScroll(onBottom, loading) {
   useEffect(() => {
     const onScroll = () => {
       if (loading) return;
-      if (
-        window.innerHeight + window.pageYOffset >=
-        document.body.offsetHeight
-      ) {
-        console.warn("you're at the bottom of the page");
+      if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight)
         onBottom();
-      }
     };
     window.addEventListener("scroll", onScroll);
 

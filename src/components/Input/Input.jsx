@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { AiOutlineSearch } from "react-icons/ai";
 
 const StyledInput = styled.input`
   height: 40px;
