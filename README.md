@@ -18,7 +18,11 @@
 
 ## 架構說明
 
-使用 [Create React App](https://github.com/facebook/create-react-app) 快速建立專案。
+### 使用套件
+
+1. 使用 [Create React App](https://github.com/facebook/create-react-app) 快速建立專案。
+2. [lodash](https://lodash.com/)：提供資料處理的工具、函式。
+3. [axios](https://axios-http.com/)：用來做網路請求，提供 url params、cancel 等功能。
 
 ### Components
 
@@ -34,6 +38,21 @@
    1. `full_name`：專案全名，點擊後可以跳轉。
    2. `stargazers_count`：星星數目。
    3. `description`：專案描述。
+
+Initial State：
+![initial](docs/images/initial.png)
+
+Loading：
+![loading](docs/images/loading.png)
+
+Result:
+![result](docs/images/result.png)
+
+Not Found:
+![not found](docs/images/not-found.png)
+
+Error：
+![error](docs/images/error.png)
 
 ### githubAPI.js
 
