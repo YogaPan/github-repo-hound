@@ -21,9 +21,7 @@ function App() {
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const { repos, loading, error } = useDebounceFetchRepos(query, page, 300);
-  useInfiniteScroll(() => {
-    setPage((page) => page + 1);
-  }, loading);
+  useInfiniteScroll(() => setPage((page) => page + 1), loading, error);
 
   const handleInputChange = (e) => {
     setPage(1);
