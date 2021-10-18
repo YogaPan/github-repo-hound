@@ -1,4 +1,19 @@
-# Getting Started with Create React App
+# Github Repo Hound
+
+TODO
+
+## 啟動方法
+
+建議使用 Node 版本 16 以上。
+
+1. `npm install`
+2. `npm run start`
+
+## 架構說明
+
+TODO
+
+---
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

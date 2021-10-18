@@ -1,20 +1,23 @@
+import axios from "axios";
+
 const API_URL = "https://api.github.com/";
 
 class GithubAPI {
-  static get = (url) => new GithubAPI(url, "GET");
-  static post = (url) => new GithubAPI(url, "POST");
-  static put = (url) => new GithubAPI(url, "PUT");
-  static delete = (url) => new GithubAPI(url, "DELETE");
+  static get = (url) => new GithubAPI("GET", url);
+  static post = (url) => new GithubAPI("POST", url);
+  static put = (url) => new GithubAPI("PUT", url);
+  static delete = (url) => new GithubAPI("DELETE", url);
 
   static searchRepo = (qualifiers) =>
     GithubAPI.get("/search/repositories").param("q", qualifiers);
 
-  constructor(path, method) {
-    this.url = new URL(path, API_URL).toString();
-    this.method = method || "GET";
-    this.urlParams = {};
-    this.headers = {};
-    this.body = undefined;
+  constructor(method, path) {
+    this._url = new URL(path, API_URL).toString();
+    this._method = method || "GET";
+    this._urlParams = {};
+    this._headers = {};
+    this._bodyData = undefined;
+    this._cancelToken = undefined;
   }
 
   paginate(page, perPage) {
@@ -23,12 +26,12 @@ class GithubAPI {
   }
 
   headers(data) {
-    this.headers = data;
+    this._headers = data;
     return this;
   }
 
   param(key, value) {
-    this.urlParams[key] = value;
+    this._urlParams[key] = value;
     return this;
   }
 
@@ -38,23 +41,27 @@ class GithubAPI {
   }
 
   body(data) {
-    this.body = data;
+    this._bodyData = data;
+    return this;
+  }
+
+  cancelToken(cancelToken) {
+    this._cancelToken = cancelToken;
     return this;
   }
 
   then(onFulfill, onReject) {
-    let url = this.url;
-    if (Object.getOwnPropertyNames(this.urlParams).length !== 0)
-      url = url + "?" + new URLSearchParams(this.urlParams).toString();
-
-    return fetch(url, {
-      method: this.method,
-      headers: this.headers,
-      body: this.body,
+    return axios({
+      url: this._url,
+      method: this._method,
+      params: this._urlParams,
+      headers: this._headers,
+      data: this._bodyData,
+      cancelToken: this._cancelToken,
     })
-      .then((response) => {
-        if (response.ok) return response;
-        throw new Error(response.status);
+      .then((res) => {
+        if (res.status === 200) return res.data;
+        throw new Error(res.status);
       })
       .then(onFulfill, onReject);
   }
