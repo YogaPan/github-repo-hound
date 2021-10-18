@@ -8,25 +8,26 @@
 
 1. 執行 `npm install`
 2. 執行 `npm start`
-3. 至 http://localhost:3000/。
+3. 至 http://localhost:3000。
 
 ### Production Build
 
 1. 執行 `npm run build`
 2. 執行 `npx serve -s build -p 5000`
-3. 至 `http://localhost:5000`
+3. 至 http://localhost:5000
 
 ## 架構說明
 
 ### 使用套件
 
-1. 使用 [Create React App](https://github.com/facebook/create-react-app) 快速建立專案。
-2. [lodash](https://lodash.com/)：提供資料處理的工具、函式。
-3. [axios](https://axios-http.com/)：用來做網路請求，提供 url params、cancel 等功能。
+1. [Create React App](https://github.com/facebook/create-react-app)：快速建立 React 專案。
+2. [Lodash](https://lodash.com/)：提供資料處理的工具、函式。
+3. [Axios](https://axios-http.com/)：用來做網路請求，提供 url params、cancel 等功能。
+4. [Styled Components](https://styled-components.com/)：CSS-In-JS 的函式庫。
 
 ### Components
 
-1. `App`：最外層的 component，包含 Input 和 RepoList。
+1. `App`：最外層的 component，包含 `Input` 和 `RepoList` component。
 2. `Input`：搜尋的輸入匡
 3. `RepoList`
    1. 在 input 為空時為空白。
@@ -81,3 +82,4 @@ Error：
 1. 使用 SDK：[octokit.js](https://github.com/octokit/octokit.js)
 2. 支援 RWD
 3. 使用 [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) 來取代 `onscroll` 提升效能。
+4. hooks、component 的 unit test。
